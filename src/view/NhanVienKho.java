@@ -4,6 +4,14 @@
  */
 package view;
 
+import Connect.Connect;
+import java.awt.CardLayout;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import quanlymaytinh.LuuMaNhanVien;
+
 /**
  *
  * @author luong
@@ -13,10 +21,49 @@ public class NhanVienKho extends javax.swing.JFrame {
     /**
      * Creates new form NhanVienKho
      */
-    public NhanVienKho() {
+    public NhanVienKho() throws ClassNotFoundException, SQLException {
         initComponents();
+        init();
+        hienthiten();
     }
+     public void hienthiten()
+    {
+        String manv = LuuMaNhanVien.getInstance().getMaNhanVien();
+        System.out.println("Mã nhân viên: " + manv);
 
+        String ten = "";
+        String sql = "SELECT TenNhanVien FROM nhanvien WHERE manhanvien = ? ";
+        
+    try {
+        Connect cn = new Connect();
+        java.sql.PreparedStatement pst = cn.con.prepareStatement(sql);
+        pst.setString(1, manv);
+        ResultSet rs = pst.executeQuery();
+        
+        if (rs.next()) {
+            ten = rs.getString("TenNhanVien");
+        }
+        System.out.println(ten);
+        txtTen.setText(ten);
+
+        rs.close();
+        pst.close();
+        cn.con.close();
+    } catch (SQLException | ClassNotFoundException ex) {
+        ex.printStackTrace();
+    }
+    }
+ CardLayout cardLayout;
+
+    private void init() throws ClassNotFoundException, SQLException {
+    cardLayout = new CardLayout();
+    content_main.setLayout(cardLayout);
+    content_main.add(new SanPham(), "sanpham");
+    content_main.add(new NhapHang(), "nhaphang");
+    content_main.add(new NhaCungCap(), "nhacungcap");
+
+
+}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -30,8 +77,14 @@ public class NhanVienKho extends javax.swing.JFrame {
         jmenu = new javax.swing.JPanel();
         btnPhieuXuat = new javax.swing.JButton();
         btnSanPham = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        btnNcc = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        txtTen = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(255, 255, 255));
 
         content_main.setBackground(new java.awt.Color(255, 255, 255));
         content_main.setLayout(new java.awt.CardLayout());
@@ -41,35 +94,111 @@ public class NhanVienKho extends javax.swing.JFrame {
         btnPhieuXuat.setBackground(new java.awt.Color(0, 204, 204));
         btnPhieuXuat.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnPhieuXuat.setForeground(new java.awt.Color(255, 255, 255));
+        btnPhieuXuat.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icons8-add-to-shopping-basket-32.png"))); // NOI18N
         btnPhieuXuat.setText("Nhập Hàng");
         btnPhieuXuat.setBorder(null);
+        btnPhieuXuat.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnPhieuXuat.setIconTextGap(10);
+        btnPhieuXuat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPhieuXuatActionPerformed(evt);
+            }
+        });
 
         btnSanPham.setBackground(new java.awt.Color(0, 204, 204));
         btnSanPham.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnSanPham.setForeground(new java.awt.Color(255, 255, 255));
+        btnSanPham.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icons8-product-32.png"))); // NOI18N
         btnSanPham.setText("Sản Phẩm");
         btnSanPham.setBorder(null);
+        btnSanPham.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnSanPham.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnSanPham.setIconTextGap(10);
+        btnSanPham.setVerifyInputWhenFocusTarget(false);
         btnSanPham.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSanPhamActionPerformed(evt);
             }
         });
 
+        jButton1.setBackground(new java.awt.Color(0, 204, 204));
+        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(255, 255, 255));
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icons8-open-pane-32.png"))); // NOI18N
+        jButton1.setText("Đăng Xuất");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        btnNcc.setBackground(new java.awt.Color(0, 204, 204));
+        btnNcc.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnNcc.setForeground(new java.awt.Color(255, 255, 255));
+        btnNcc.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icons8-supplier-32 (2).png"))); // NOI18N
+        btnNcc.setText("Nhà Cung Cấp");
+        btnNcc.setBorder(null);
+        btnNcc.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnNcc.setIconTextGap(10);
+        btnNcc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNccActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("Xin Chào!");
+
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icons8-account-32.png"))); // NOI18N
+        jLabel2.setText("jLabel2");
+
+        txtTen.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        txtTen.setForeground(new java.awt.Color(255, 255, 255));
+        txtTen.setText("jLabel3");
+
         javax.swing.GroupLayout jmenuLayout = new javax.swing.GroupLayout(jmenu);
         jmenu.setLayout(jmenuLayout);
         jmenuLayout.setHorizontalGroup(
             jmenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(btnSanPham, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(btnPhieuXuat, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
+            .addComponent(btnPhieuXuat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(btnNcc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jmenuLayout.createSequentialGroup()
+                .addGroup(jmenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jmenuLayout.createSequentialGroup()
+                        .addGap(19, 19, 19)
+                        .addComponent(jButton1)
+                        .addGap(0, 35, Short.MAX_VALUE))
+                    .addGroup(jmenuLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jmenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jmenuLayout.createSequentialGroup()
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(txtTen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addContainerGap())
         );
         jmenuLayout.setVerticalGroup(
             jmenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jmenuLayout.createSequentialGroup()
-                .addGap(203, 203, 203)
+                .addGap(84, 84, 84)
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
+                .addGroup(jmenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel2)
+                    .addComponent(txtTen))
+                .addGap(76, 76, 76)
                 .addComponent(btnSanPham, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnPhieuXuat, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(341, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnNcc, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addGap(94, 94, 94))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -78,13 +207,13 @@ public class NhanVienKho extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jmenu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(content_main, javax.swing.GroupLayout.PREFERRED_SIZE, 1008, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(content_main, javax.swing.GroupLayout.DEFAULT_SIZE, 1280, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(content_main, javax.swing.GroupLayout.DEFAULT_SIZE, 640, Short.MAX_VALUE)
             .addComponent(jmenu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(content_main, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -93,7 +222,35 @@ public class NhanVienKho extends javax.swing.JFrame {
     private void btnSanPhamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSanPhamActionPerformed
         // TODO add your handling code here:
         //cardLayout.show(content_main, "sanpham");
+        cardLayout.show(content_main, "sanpham");
     }//GEN-LAST:event_btnSanPhamActionPerformed
+
+    private void btnPhieuXuatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPhieuXuatActionPerformed
+        // TODO add your handling code here:
+        cardLayout.show(content_main, "nhaphang");
+    }//GEN-LAST:event_btnPhieuXuatActionPerformed
+
+    private void btnNccActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNccActionPerformed
+        // TODO add your handling code here:
+        cardLayout.show(content_main, "nhacungcap");
+    }//GEN-LAST:event_btnNccActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        int confirm = javax.swing.JOptionPane.showConfirmDialog(
+            this,
+            "Bạn có chắc chắn muốn đăng xuất không?",
+            "Xác nhận đăng xuất",
+            javax.swing.JOptionPane.YES_NO_OPTION,
+            javax.swing.JOptionPane.QUESTION_MESSAGE
+    );
+
+    if (confirm == javax.swing.JOptionPane.YES_OPTION) {
+        // Thực hiện đăng xuất, ví dụ: đóng MainForm và mở lại LoginForm
+        this.dispose(); // hoặc setVisible(false);
+        new DangNhap().setVisible(true); // Cần import hoặc tạo class LoginForm phù hợp
+    }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -126,15 +283,26 @@ public class NhanVienKho extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new NhanVienKho().setVisible(true);
+                try {
+                    new NhanVienKho().setVisible(true);
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(NhanVienKho.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (SQLException ex) {
+                    Logger.getLogger(NhanVienKho.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnNcc;
     private javax.swing.JButton btnPhieuXuat;
     private javax.swing.JButton btnSanPham;
     private javax.swing.JPanel content_main;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jmenu;
+    private javax.swing.JLabel txtTen;
     // End of variables declaration//GEN-END:variables
 }

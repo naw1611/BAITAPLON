@@ -161,7 +161,8 @@ public class NhapHang extends javax.swing.JPanel {
 
         setBackground(new java.awt.Color(255, 255, 255));
 
-        jPanel2.setBackground(new java.awt.Color(255, 204, 204));
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Phiếu Nhập"));
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel8.setText("Phiếu Nhập");
@@ -179,7 +180,9 @@ public class NhapHang extends javax.swing.JPanel {
         ));
         jScrollPane1.setViewportView(tbPhieuNhap);
 
+        jButton1.setBackground(new java.awt.Color(0, 204, 204));
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("Chi Tiết Phiếu Nhập");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -191,16 +194,14 @@ public class NhapHang extends javax.swing.JPanel {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 711, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(339, 339, 339)
-                        .addComponent(jLabel8))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(347, 347, 347)
-                        .addComponent(jButton1)))
-                .addContainerGap(387, Short.MAX_VALUE))
-            .addComponent(jScrollPane1)
+                .addGap(259, 259, 259)
+                .addComponent(jLabel8))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jButton1)
+                .addGap(270, 270, 270))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -208,13 +209,14 @@ public class NhapHang extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(jLabel8)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 439, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(52, 52, 52)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(84, 84, 84)
                 .addComponent(jButton1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel1.setBackground(new java.awt.Color(204, 204, 255));
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Nhập Hàng"));
 
         jLabel2.setText("Mã Sản Phẩm");
 
@@ -226,7 +228,9 @@ public class NhapHang extends javax.swing.JPanel {
 
         jLabel6.setText("Mã Nhà Cung Cấp");
 
+        btnNhapHang.setBackground(new java.awt.Color(0, 204, 204));
         btnNhapHang.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnNhapHang.setForeground(new java.awt.Color(255, 255, 255));
         btnNhapHang.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icons8-add-to-shopping-basket-32.png"))); // NOI18N
         btnNhapHang.setText("Nhập Hàng");
         btnNhapHang.addActionListener(new java.awt.event.ActionListener() {
@@ -241,6 +245,9 @@ public class NhapHang extends javax.swing.JPanel {
         txtThanhTien.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         txtThanhTien.setEnabled(false);
 
+        jButton2.setBackground(new java.awt.Color(0, 204, 204));
+        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButton2.setForeground(new java.awt.Color(255, 255, 255));
         jButton2.setText("Thành Tiền");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -266,7 +273,9 @@ public class NhapHang extends javax.swing.JPanel {
         });
         jScrollPane2.setViewportView(tbSanPham);
 
+        jButton3.setBackground(new java.awt.Color(0, 204, 204));
         jButton3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jButton3.setForeground(new java.awt.Color(255, 255, 255));
         jButton3.setText("Reset");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -276,6 +285,9 @@ public class NhapHang extends javax.swing.JPanel {
 
         jLabel7.setText("Mã Tìm Kiếm");
 
+        jButton4.setBackground(new java.awt.Color(0, 204, 204));
+        jButton4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButton4.setForeground(new java.awt.Color(255, 255, 255));
         jButton4.setText("Tìm Kiếm");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -376,13 +388,14 @@ public class NhapHang extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -517,7 +530,7 @@ public class NhapHang extends javax.swing.JPanel {
         if (rs.next()) {
         txtMaSanPham.setText(rs.getString("MaSanPham"));
         txtTen.setText(rs.getString("TenSanPham"));
-        txtGia.setText(df.format(rs.getDouble("GiaNhap")));
+        txtGia.setText(String.valueOf((long)rs.getDouble("GiaNhap")));
         txtMaNhaCungCap.setText(rs.getString("MaNhaCungCap"));// Định dạng số với dấu phân cách hàng nghìn
     } else {
         JOptionPane.showMessageDialog(this, "Không tìm thấy thông tin cho sản phẩm: " + masp);

@@ -19,6 +19,30 @@ import javax.swing.table.DefaultTableModel;
 import quanlymaytinh.LuuMaNhanVien;
 import java.sql.PreparedStatement;
 import quanlymaytinh.PhieuNhap;
+import Connect.Connect;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.text.DecimalFormat;
+import javax.swing.table.DefaultTableModel;
+import quanlymaytinh.HoaDon;
+
+// iText (lowagie) PDF thư viện
+import com.lowagie.text.Document;
+import com.lowagie.text.DocumentException;
+import com.lowagie.text.Paragraph;
+import com.lowagie.text.Chunk;
+import com.lowagie.text.Font;
+import com.itextpdf.text.BaseColor;
+import com.lowagie.text.Element;
+import com.lowagie.text.Phrase;
+import com.lowagie.text.pdf.BaseFont;
+import com.lowagie.text.pdf.PdfPCell;
+import com.lowagie.text.pdf.PdfPTable;
+import com.lowagie.text.pdf.PdfWriter;
+import java.io.File;
+
+import java.io.FileOutputStream;
+import javax.swing.JOptionPane;
 /**
  *
  * @author luong
@@ -30,6 +54,7 @@ public class ChiTietNhap extends javax.swing.JFrame {
      */
     public ChiTietNhap() {
         initComponents();
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         showData();
     }
 
@@ -94,6 +119,7 @@ public class ChiTietNhap extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblChiTietPhieu = new javax.swing.JTable();
+        btnPdf = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -149,34 +175,49 @@ public class ChiTietNhap extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tblChiTietPhieu);
 
+        btnPdf.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnPdf.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icons8-pdf-48.png"))); // NOI18N
+        btnPdf.setText("Xuất Phiếu Nhập");
+        btnPdf.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPdfActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(labelMaPhieu, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(labelNhaCungCap, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(43, 43, 43)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(labelNguoiTao, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(labelThoiGianTao, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1)
-                        .addGap(21, 21, 21))))
+                        .addContainerGap()
+                        .addComponent(jScrollPane1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(24, 24, 24)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel2))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(labelMaPhieu, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(labelNhaCungCap, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(43, 43, 43)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel5)
+                                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(labelNguoiTao, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(labelThoiGianTao, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(262, 262, 262)
+                                .addComponent(btnPdf)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -194,13 +235,81 @@ public class ChiTietNhap extends javax.swing.JFrame {
                     .addComponent(jLabel5)
                     .addComponent(labelThoiGianTao)
                     .addComponent(labelNhaCungCap))
-                .addGap(31, 31, 31)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 351, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(17, Short.MAX_VALUE))
+                .addGap(52, 52, 52)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(61, 61, 61)
+                .addComponent(btnPdf)
+                .addContainerGap(62, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnPdfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPdfActionPerformed
+        // TODO add your handling code here:
+        Document document = new Document();
+        try {
+            File directory = new File("C:/PDFs");
+            if (!directory.exists()) {
+                directory.mkdirs();
+            }
+            String fileName = "C:/PDFs/PhieuNhap_" + labelMaPhieu.getText() + ".pdf";
+            PdfWriter.getInstance(document, new FileOutputStream(fileName));
+            document.open();
+
+            // Font tiếng Việt
+            BaseFont baseFont = BaseFont.createFont("C:/Windows/Fonts/arial.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+            Font fontTitle = new Font(baseFont, 16, Font.BOLD);
+            Font fontNormal = new Font(baseFont, 12);
+
+            // Tiêu đề
+            Paragraph title = new Paragraph("CHI TIẾT Phiếu Nhập", fontTitle);
+            title.setAlignment(Element.ALIGN_CENTER);
+            title.setSpacingAfter(10f);
+            document.add(title);
+            document.add(new Paragraph("Mã Phiếu Nhập: " + labelMaPhieu.getText(), fontNormal));
+            document.add(new Paragraph("Mã Nhân Viên: " + labelNguoiTao.getText(), fontNormal));
+            document.add(new Paragraph("Mã Nhà Cung Cấp: " + labelNhaCungCap.getText(), fontNormal));
+            document.add(new Paragraph("Ngày Lập: " + labelThoiGianTao.getText(), fontNormal));
+            document.add(Chunk.NEWLINE);
+
+            // Bảng dữ liệu sản phẩm
+            PdfPTable table = new PdfPTable(5); // 5 cột
+            table.setWidthPercentage(100);
+            table.setSpacingBefore(10f);
+            table.setSpacingAfter(10f);
+            table.setWidths(new float[]{2f, 4f, 2f, 3f, 3f});
+
+            // Tiêu đề cột
+            String[] headers = {"Mã Sản Phẩm", "Tên Sản Phẩm", "Số Lượng", "Đơn Giá", "Thành Tiền"};
+            for (String header : headers) {
+                PdfPCell headerCell = new PdfPCell(new Phrase(header, fontNormal));
+                headerCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                //headerCell.setBackgroundColor(BaseColor.LIGHT_GRAY);
+                headerCell.setPadding(5f);
+                table.addCell(headerCell);
+            }
+
+            // Dữ liệu từ JTable
+            for (int i = 0; i < tblChiTietPhieu.getRowCount(); i++) {
+                for (int j = 0; j < tblChiTietPhieu.getColumnCount(); j++) {
+                    Object value = tblChiTietPhieu.getValueAt(i, j);
+                    Phrase cellPhrase = new Phrase(value != null ? value.toString() : "", fontNormal);
+                    PdfPCell cell = new PdfPCell(cellPhrase);
+                    cell.setPadding(5f);
+                    table.addCell(cell);
+                }
+            }
+
+            document.add(table);
+            document.close();
+
+            JOptionPane.showMessageDialog(this, "Xuất phiếu PDF thành công:\n" + fileName);
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Lỗi khi xuất phiếu: " + e.getMessage());
+        }
+    }//GEN-LAST:event_btnPdfActionPerformed
 
     /**
      * @param args the command line arguments
@@ -240,6 +349,7 @@ public class ChiTietNhap extends javax.swing.JFrame {
    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnPdf;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

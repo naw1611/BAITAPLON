@@ -52,7 +52,8 @@ public class SanPham extends javax.swing.JPanel {
              String sql = "SELECT MaSanPham, TenSanPham, TenNhaCungCap, GiaBan, SoLuongTon " +
                            "FROM sanpham "
                            + "JOIN nhacungcap  "
-                           + "ON sanpham.MaNhaCungCap = nhacungcap.MaNhaCungCap  ";
+                           + "ON sanpham.MaNhaCungCap = nhacungcap.MaNhaCungCap  "
+                           +"Where trangthai = 'Đang Bán' ";
              ResultSet rs = statement.executeQuery(sql);
              int i = 0;
             while (rs.next()) {                
@@ -153,8 +154,13 @@ public class SanPham extends javax.swing.JPanel {
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Tìm Kiếm"));
 
         btnTimKiem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icons8-search-48.png"))); // NOI18N
+        btnTimKiem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTimKiemActionPerformed(evt);
+            }
+        });
 
-        cbTimKiem.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mã Sản Phẩm", "Tên Sản Phẩm", "Giá Bán ", "Giá Nhập", " " }));
+        cbTimKiem.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mã Sản Phẩm", "Tên Sản Phẩm", "Giá Bán ", " ", " " }));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -224,7 +230,7 @@ public class SanPham extends javax.swing.JPanel {
                                     .addComponent(btnSua, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(btnHienThi, javax.swing.GroupLayout.Alignment.TRAILING)))))
                     .addComponent(txtTenSanPham, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(43, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -295,8 +301,8 @@ public class SanPham extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 959, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 959, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 922, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -304,8 +310,8 @@ public class SanPham extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 387, Short.MAX_VALUE)
-                .addGap(26, 26, 26)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -360,7 +366,7 @@ public class SanPham extends javax.swing.JPanel {
     if (confirm == JOptionPane.YES_OPTION) {
         try {
             Connect cn = new Connect();
-            String sql = "DELETE FROM sanpham WHERE MaSanPham = '"+masp+"' ";
+            String sql = "UPDATE sanpham SET trangthai = 'Ngừng Bán' WHERE masanpham = '"+masp+"'";
             Statement st = cn.con.createStatement();
             st.executeUpdate(sql);
 
@@ -448,6 +454,70 @@ public class SanPham extends javax.swing.JPanel {
             
         }
     }//GEN-LAST:event_tbSanPhamMouseClicked
+
+    private void btnTimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimKiemActionPerformed
+        // TODO add your handling code here:
+        try {
+        String tieuChi = cbTimKiem.getSelectedItem().toString();
+        String giaTriTimKiem = txtTimKiem.getText().trim();
+
+        if (giaTriTimKiem.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập giá trị tìm kiếm!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        Connect cn = new Connect();
+        if (cn.con == null || cn.con.isClosed()) {
+            JOptionPane.showMessageDialog(this, "Không thể kết nối đến cơ sở dữ liệu!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        String sql;
+        if (tieuChi.equals("Mã Sản Phẩm")) {
+            sql = "SELECT * FROM sanpham WHERE MaSanPham = ?";
+        } else if (tieuChi.equals("Tên Sản Phẩm")) {
+            sql = "SELECT * FROM sanpham WHERE TenSanPham LIKE ?";
+            giaTriTimKiem = "%" + giaTriTimKiem + "%";
+        } else if (tieuChi.equals("Giá Bán")) {
+            sql = "SELECT * FROM sanpham WHERE GiaBan LIKE ?";
+            giaTriTimKiem = "%" + giaTriTimKiem + "%";
+        } else {
+            JOptionPane.showMessageDialog(this, "Tiêu chí tìm kiếm không hợp lệ: " + tieuChi, "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        try (PreparedStatement stmt = cn.con.prepareStatement(sql)) {
+            stmt.setString(1, giaTriTimKiem);
+
+            ResultSet rs = stmt.executeQuery();
+
+            DefaultTableModel model = (DefaultTableModel) tbSanPham.getModel();
+            model.setRowCount(0);
+
+            boolean found = false;
+            while (rs.next()) {
+                found = true;
+                model.addRow(new Object[]{
+                    rs.getString("MaSanPham"),
+                    rs.getString("TenSanPham"),
+                    rs.getString("MaNhaCungCap"),
+                    rs.getString("GiaBan"),
+                    rs.getString("SoLuongTon")
+                });
+            }
+
+            if (!found) {
+                JOptionPane.showMessageDialog(this, "Không tìm thấy sản phẩm nào khớp với tiêu chí!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Lỗi khi tìm kiếm: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+        }
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Lỗi không xác định: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+    }       
+    }//GEN-LAST:event_btnTimKiemActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

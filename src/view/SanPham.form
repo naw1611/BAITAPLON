@@ -24,8 +24,8 @@
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jScrollPane1" alignment="0" pref="959" max="32767" attributes="0"/>
-                  <Component id="jPanel1" alignment="0" pref="959" max="32767" attributes="0"/>
+                  <Component id="jScrollPane1" alignment="0" max="32767" attributes="0"/>
+                  <Component id="jPanel1" alignment="0" pref="922" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -36,8 +36,8 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jPanel1" pref="387" max="32767" attributes="0"/>
-              <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
-              <Component id="jScrollPane1" min="-2" pref="205" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jScrollPane1" min="-2" pref="225" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -102,7 +102,7 @@
                       </Group>
                       <Component id="txtTenSanPham" alignment="0" min="-2" pref="224" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="43" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -297,6 +297,9 @@
                   <Image iconType="3" name="/img/icons8-search-48.png"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnTimKiemActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JComboBox" name="cbTimKiem">
               <Properties>
@@ -305,7 +308,7 @@
                     <StringItem index="0" value="M&#xe3; S&#x1ea3;n Ph&#x1ea9;m"/>
                     <StringItem index="1" value="T&#xea;n S&#x1ea3;n Ph&#x1ea9;m"/>
                     <StringItem index="2" value="Gi&#xe1; B&#xe1;n "/>
-                    <StringItem index="3" value="Gi&#xe1; Nh&#x1ead;p"/>
+                    <StringItem index="3" value=" "/>
                     <StringItem index="4" value=" "/>
                   </StringArray>
                 </Property>
